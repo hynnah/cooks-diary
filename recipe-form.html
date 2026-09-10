@@ -1,0 +1,394 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Recipe Form</title>
+
+  <style>
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    body {
+      min-height: 100vh;
+      font-family: Inter, Arial, sans-serif;
+      background: #eeeae3;
+      color: #292823;
+    }
+
+    header {
+      height: 78px;
+      padding: 0 5%;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
+
+    .brand {
+      font-family: Georgia, serif;
+      font-size: 25px;
+      color: #29352d;
+    }
+
+    .back-btn {
+      padding: 10px 16px;
+      border-radius: 3px;
+      border: 1px solid #d5d0c7;
+      background: transparent;
+      color: #393832;
+      font-size: 12px;
+      cursor: pointer;
+    }
+
+    main {
+      width: min(850px, 92%);
+      margin: 35px auto 70px;
+    }
+
+    .form-header {
+      margin-bottom: 35px;
+    }
+
+    .eyebrow {
+      text-transform: uppercase;
+      letter-spacing: 3px;
+      color: #8c8b83;
+      font-size: 10px;
+      margin-bottom: 10px;
+    }
+
+    h1 {
+      font-family: Georgia, serif;
+      font-size: 48px;
+      font-weight: 400;
+      color: #29352d;
+    }
+
+    .form-card {
+      background: #faf8f3;
+      padding: 40px;
+      border: 1px solid #ded9d0;
+      box-shadow: 0 15px 40px rgba(40, 40, 35, 0.06);
+    }
+
+    form {
+      display: flex;
+      flex-direction: column;
+      gap: 25px;
+    }
+
+    .row {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 20px;
+    }
+
+    .field {
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+    }
+
+    label {
+      text-transform: uppercase;
+      letter-spacing: 1.5px;
+      color: #77766f;
+      font-size: 10px;
+      font-weight: 600;
+    }
+
+    input,
+    textarea,
+    select {
+      width: 100%;
+      border: 1px solid #d5d0c7;
+      background: #fffdfa;
+      color: #35342f;
+      padding: 13px 14px;
+      border-radius: 2px;
+      font: inherit;
+      font-size: 13px;
+      outline: none;
+    }
+
+    input:focus,
+    textarea:focus,
+    select:focus {
+      border-color: #788574;
+    }
+
+    textarea {
+      min-height: 145px;
+      resize: vertical;
+      line-height: 1.6;
+    }
+
+    .hint {
+      color: #99968d;
+      font-size: 11px;
+      margin-top: -2px;
+    }
+
+    .actions {
+      display: flex;
+      justify-content: flex-end;
+      gap: 10px;
+      padding-top: 10px;
+    }
+
+    .cancel,
+    .save {
+      padding: 12px 22px;
+      border-radius: 3px;
+      cursor: pointer;
+      font-size: 12px;
+      border: 1px solid #d2cdc4;
+    }
+
+    .cancel {
+      background: transparent;
+      color: #4e4d47;
+    }
+
+    .save {
+      background: #29352d;
+      color: white;
+      border-color: #29352d;
+    }
+
+    .save:hover {
+      background: #3a493d;
+    }
+
+    @media (max-width: 650px) {
+      .form-card {
+        padding: 25px;
+      }
+
+      .row {
+        grid-template-columns: 1fr;
+      }
+
+      h1 {
+        font-size: 38px;
+      }
+    }
+  </style>
+</head>
+
+<body>
+
+  <header>
+    <div class="brand">Recipe Book</div>
+
+    <button
+      class="back-btn"
+      onclick="location.href='book.html'"
+    >
+      Back to Book
+    </button>
+  </header>
+
+  <main>
+    <div class="form-header">
+      <div class="eyebrow" id="formEyebrow">New entry</div>
+      <h1 id="formTitle">Add Recipe</h1>
+    </div>
+
+    <section class="form-card">
+      <form id="recipeForm">
+
+        <div class="row">
+          <div class="field">
+            <label for="title">Recipe Name</label>
+            <input
+              id="title"
+              type="text"
+              placeholder="e.g. Creamy Tomato Pasta"
+              required
+            >
+          </div>
+
+          <div class="field">
+            <label for="category">Category</label>
+            <select id="category" required>
+              <option value="">Select category</option>
+              <option value="Breakfast">Breakfast</option>
+              <option value="Lunch">Lunch</option>
+              <option value="Dinner">Dinner</option>
+              <option value="Dessert">Dessert</option>
+              <option value="Snack">Snack</option>
+              <option value="Drink">Drink</option>
+              <option value="Other">Other</option>
+            </select>
+          </div>
+        </div>
+
+        <div class="field">
+          <label for="cookTime">Cook Time</label>
+          <input
+            id="cookTime"
+            type="text"
+            placeholder="e.g. 30 minutes"
+            required
+          >
+        </div>
+
+        <div class="field">
+          <label for="ingredients">Ingredients</label>
+          <textarea
+            id="ingredients"
+            placeholder="200g pasta&#10;2 cloves garlic&#10;1 cup cream&#10;50g parmesan"
+            required
+          ></textarea>
+          <div class="hint">
+            Write one ingredient per line.
+          </div>
+        </div>
+
+        <div class="field">
+          <label for="steps">Steps</label>
+          <textarea
+            id="steps"
+            placeholder="Cook the pasta.&#10;Sauté the garlic.&#10;Add the cream and simmer.&#10;Mix everything together."
+            required
+          ></textarea>
+          <div class="hint">
+            Write one step per line.
+          </div>
+        </div>
+
+        <div class="field">
+          <label for="imageUrl">Image URL</label>
+          <input
+            id="imageUrl"
+            type="url"
+            placeholder="https://example.com/recipe.jpg"
+          >
+          <div class="hint">
+            Optional. Use a publicly accessible image URL.
+          </div>
+        </div>
+
+        <div class="actions">
+          <button
+            type="button"
+            class="cancel"
+            onclick="location.href='book.html'"
+          >
+            Cancel
+          </button>
+
+          <button type="submit" class="save" id="saveButton">
+            Save Recipe
+          </button>
+        </div>
+
+      </form>
+    </section>
+  </main>
+
+  <script>
+    const STORAGE_KEY = "virtualRecipeBook";
+
+    const params = new URLSearchParams(window.location.search);
+    const editId = params.get("id");
+
+    let recipes = JSON.parse(
+      localStorage.getItem(STORAGE_KEY) || "[]"
+    );
+
+    const form = document.getElementById("recipeForm");
+
+    const titleInput = document.getElementById("title");
+    const categoryInput = document.getElementById("category");
+    const cookTimeInput = document.getElementById("cookTime");
+    const ingredientsInput = document.getElementById("ingredients");
+    const stepsInput = document.getElementById("steps");
+    const imageUrlInput = document.getElementById("imageUrl");
+
+    const formTitle = document.getElementById("formTitle");
+    const formEyebrow = document.getElementById("formEyebrow");
+    const saveButton = document.getElementById("saveButton");
+
+    function loadRecipe() {
+      if (!editId) return;
+
+      const recipe = recipes.find(item => item.id === editId);
+
+      if (!recipe) {
+        alert("Recipe not found.");
+        location.href = "book.html";
+        return;
+      }
+
+      formTitle.textContent = "Edit Recipe";
+      formEyebrow.textContent = "Update entry";
+      saveButton.textContent = "Update Recipe";
+
+      titleInput.value = recipe.title || "";
+      categoryInput.value = recipe.category || "";
+      cookTimeInput.value = recipe.cookTime || "";
+      ingredientsInput.value =
+        (recipe.ingredients || []).join("\n");
+      stepsInput.value =
+        (recipe.steps || []).join("\n");
+      imageUrlInput.value = recipe.imageUrl || "";
+    }
+
+    function cleanLines(value) {
+      return value
+        .split("\n")
+        .map(line => line.trim())
+        .filter(line => line.length > 0);
+    }
+
+    form.addEventListener("submit", function(event) {
+      event.preventDefault();
+
+      const recipeData = {
+        title: titleInput.value.trim(),
+        category: categoryInput.value,
+        cookTime: cookTimeInput.value.trim(),
+        ingredients: cleanLines(ingredientsInput.value),
+        steps: cleanLines(stepsInput.value),
+        imageUrl: imageUrlInput.value.trim()
+      };
+
+      if (editId) {
+        const index = recipes.findIndex(
+          recipe => recipe.id === editId
+        );
+
+        if (index === -1) {
+          alert("Recipe not found.");
+          return;
+        }
+
+        recipes[index] = {
+          ...recipes[index],
+          ...recipeData
+        };
+      } else {
+        recipes.push({
+          id: crypto.randomUUID(),
+          ...recipeData
+        });
+      }
+
+      localStorage.setItem(
+        STORAGE_KEY,
+        JSON.stringify(recipes)
+      );
+
+      location.href = "book.html";
+    });
+
+    loadRecipe();
+  </script>
+
+</body>
+</html>
