@@ -1,580 +1,194 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>My Recipe Book</title>
-
-  <script src="https://cdn.jsdelivr.net/npm/page-flip@2.0.7/dist/js/page-flip.browser.js"></script>
-
-  <style>
-    * {
-      box-sizing: border-box;
-      margin: 0;
-      padding: 0;
-    }
-
-    body {
-      min-height: 100vh;
-      font-family: Inter, Arial, sans-serif;
-      background: #eeeae3;
-      color: #292823;
-    }
-
-    header {
-      height: 78px;
-      padding: 0 5%;
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-    }
-
-    .brand {
-      font-family: Georgia, serif;
-      font-size: 25px;
-      color: #29352d;
-    }
-
-    .header-actions {
-      display: flex;
-      gap: 10px;
-    }
-
-    button,
-    .button {
-      font-family: inherit;
-      cursor: pointer;
-    }
-
-    .back-btn,
-    .add-btn {
-      padding: 10px 16px;
-      border-radius: 3px;
-      border: 1px solid #d5d0c7;
-      background: transparent;
-      color: #393832;
-      font-size: 12px;
-    }
-
-    .add-btn {
-      background: #29352d;
-      color: white;
-      border-color: #29352d;
-    }
-
-    .book-wrapper {
-      min-height: calc(100vh - 78px);
-      display: flex;
-      justify-content: center;
-      align-items: center;
-      padding: 25px 20px 60px;
-    }
-
-    #book {
-      width: 900px;
-      height: 600px;
-      max-width: 100%;
-    }
-
-    .page {
-      background: #faf8f3;
-      width: 100%;
-      height: 100%;
-      padding: 48px;
-      position: relative;
-      overflow: hidden;
-    }
-
-    .page::after {
-      content: "";
-      position: absolute;
-      inset: 0;
-      pointer-events: none;
-      background:
-        linear-gradient(
-          90deg,
-          rgba(0,0,0,0.035),
-          transparent 8%,
-          transparent 92%,
-          rgba(0,0,0,0.035)
-        );
-    }
-
-    .toc {
-      height: 100%;
-      display: flex;
-      flex-direction: column;
-      justify-content: center;
-    }
-
-    .small-title {
-      text-transform: uppercase;
-      letter-spacing: 3px;
-      font-size: 10px;
-      color: #8c8b83;
-      margin-bottom: 15px;
-    }
-
-    .toc h1 {
-      font-family: Georgia, serif;
-      font-size: 52px;
-      font-weight: 400;
-      margin-bottom: 45px;
-      color: #29352d;
-    }
-
-    .toc-list {
-      display: flex;
-      flex-direction: column;
-      gap: 13px;
-      max-height: 350px;
-      overflow-y: auto;
-      padding-right: 10px;
-    }
-
-    .toc-item {
-      display: flex;
-      align-items: center;
-      gap: 14px;
-      background: transparent;
-      border: 0;
-      border-bottom: 1px solid #ddd8cf;
-      padding: 10px 0;
-      text-align: left;
-      font-family: Georgia, serif;
-      font-size: 19px;
-      color: #35352f;
-    }
-
-    .toc-number {
-      color: #99968d;
-      font-family: Inter, Arial, sans-serif;
-      font-size: 11px;
-      min-width: 24px;
-    }
-
-    .toc-item:hover {
-      color: #687866;
-    }
-
-    .recipe-page {
-      height: 100%;
-      display: flex;
-      flex-direction: column;
-    }
-
-    .recipe-top {
-      display: flex;
-      justify-content: space-between;
-      gap: 20px;
-      margin-bottom: 28px;
-    }
-
-    .category {
-      color: #72806f;
-      font-size: 11px;
-      text-transform: uppercase;
-      letter-spacing: 2px;
-      margin-bottom: 10px;
-    }
-
-    .recipe-title {
-      font-family: Georgia, serif;
-      font-weight: 400;
-      font-size: 38px;
-      line-height: 1.1;
-    }
-
-    .cook-time {
-      white-space: nowrap;
-      color: #77766f;
-      font-size: 12px;
-      padding-top: 8px;
-    }
-
-    .recipe-image {
-      width: 100%;
-      height: 170px;
-      object-fit: cover;
-      border-radius: 3px;
-      margin-bottom: 25px;
-    }
-
-    .recipe-content {
-      display: grid;
-      grid-template-columns: 0.8fr 1.2fr;
-      gap: 35px;
-      overflow-y: auto;
-      flex: 1;
-    }
-
-    .section-title {
-      text-transform: uppercase;
-      letter-spacing: 2px;
-      font-size: 10px;
-      color: #8c8b83;
-      margin-bottom: 13px;
-    }
-
-    .ingredients,
-    .steps {
-      padding-left: 18px;
-      color: #53524b;
-      font-size: 13px;
-      line-height: 1.7;
-    }
-
-    .ingredients li,
-    .steps li {
-      margin-bottom: 8px;
-    }
-
-    .recipe-actions {
-      margin-top: 20px;
-      display: flex;
-      gap: 8px;
-    }
-
-    .edit-btn,
-    .delete-btn {
-      padding: 9px 14px;
-      font-size: 11px;
-      border-radius: 3px;
-      border: 1px solid #d6d1c7;
-      background: transparent;
-    }
-
-    .edit-btn {
-      background: #29352d;
-      color: white;
-      border-color: #29352d;
-    }
-
-    .delete-btn {
-      color: #8d4e4e;
-    }
-
-    .add-page {
-      height: 100%;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      flex-direction: column;
-      text-align: center;
-      cursor: pointer;
-    }
-
-    .plus {
-      width: 70px;
-      height: 70px;
-      border: 1px solid #bdb9b0;
-      border-radius: 50%;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      font-size: 35px;
-      font-weight: 200;
-      color: #77766f;
-      margin-bottom: 20px;
-    }
-
-    .add-page h2 {
-      font-family: Georgia, serif;
-      font-size: 25px;
-      font-weight: 400;
-      margin-bottom: 8px;
-    }
-
-    .add-page p {
-      font-size: 12px;
-      color: #89877f;
-    }
-
-    .empty {
-      color: #8c8b83;
-      font-size: 13px;
-      line-height: 1.6;
-    }
-
-    @media (max-width: 700px) {
-      header {
-        padding: 0 20px;
-      }
-
-      .brand {
-        font-size: 21px;
-      }
-
-      .book-wrapper {
-        padding: 10px;
-      }
-
-      #book {
-        height: 650px;
-      }
-
-      .page {
-        padding: 30px;
-      }
-
-      .recipe-content {
-        grid-template-columns: 1fr;
-        gap: 20px;
-      }
-
-      .recipe-image {
-        height: 130px;
-      }
-
-      .recipe-title {
-        font-size: 30px;
-      }
-    }
-  </style>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>The Book — Cook's Diary</title>
+<link rel="stylesheet" href="styles.css">
 </head>
-
-<body>
-
-  <header>
-    <div class="brand">Recipe Book</div>
-
-    <div class="header-actions">
-      <button class="back-btn" onclick="location.href='index.html'">
-        Home
-      </button>
-
-      <button class="add-btn" onclick="location.href='recipe-form.html'">
-        Add Recipe
-      </button>
-    </div>
+<body class="page-book">
+<div class="book-shell">
+  <header class="nav book-nav">
+    <a class="nav-brand" href="index.html">Cook&rsquo;s Diary</a>
+    <button id="toc-toggle" class="btn btn-secondary" type="button">Contents</button>
+    <span id="folio" class="book-folio"></span>
+    <a class="btn btn-secondary" href="recipe-form.html">+ New recipe</a>
   </header>
 
-  <main class="book-wrapper">
-    <div id="book"></div>
-  </main>
+  <div class="book-stage">
+    <div class="book">
+      <aside id="toc" class="toc">
+        <div class="toc-heading">Contents</div>
+        <div id="toc-list"></div>
+      </aside>
 
-  <script>
-    const STORAGE_KEY = "virtualRecipeBook";
-
-    let recipes = getRecipes();
-
-    function getRecipes() {
-      return JSON.parse(localStorage.getItem(STORAGE_KEY) || "[]");
-    }
-
-    function saveRecipes() {
-      localStorage.setItem(STORAGE_KEY, JSON.stringify(recipes));
-    }
-
-    function escapeHTML(value) {
-      const div = document.createElement("div");
-      div.textContent = value || "";
-      return div.innerHTML;
-    }
-
-    function renderTOC() {
-      if (!recipes.length) {
-        return `
-          <div class="toc">
-            <div class="small-title">Contents</div>
-            <h1>My Recipes</h1>
-            <p class="empty">
-              Your recipe collection is empty.<br>
-              Use the Add Recipe button to create your first recipe.
-            </p>
-          </div>
-        `;
-      }
-
-      return `
-        <div class="toc">
-          <div class="small-title">Contents</div>
-          <h1>My Recipes</h1>
-
-          <div class="toc-list">
-            ${recipes.map((recipe, index) => `
-              <button
-                class="toc-item"
-                onclick="goToRecipe(${index})"
-              >
-                <span class="toc-number">
-                  ${String(index + 1).padStart(2, "0")}
-                </span>
-                <span>${escapeHTML(recipe.title)}</span>
-              </button>
-            `).join("")}
-          </div>
-        </div>
-      `;
-    }
-
-    function renderRecipe(recipe, index) {
-      const image = recipe.imageUrl
-        ? `
-          <img
-            class="recipe-image"
-            src="${escapeHTML(recipe.imageUrl)}"
-            alt="${escapeHTML(recipe.title)}"
-            onerror="this.style.display='none'"
-          >
-        `
-        : "";
-
-      return `
-        <div class="recipe-page">
-          <div class="recipe-top">
-            <div>
-              <div class="category">
-                ${escapeHTML(recipe.category || "Recipe")}
-              </div>
-
-              <h1 class="recipe-title">
-                ${escapeHTML(recipe.title)}
-              </h1>
+      <main class="reading-pane">
+        <div id="reading-scroll" class="reading-scroll">
+          <article id="recipe-article" class="recipe-article" hidden>
+            <div class="recipe-photo" id="recipe-photo"></div>
+            <div class="recipe-meta-row">
+              <span id="recipe-category" class="tag tag-outline"></span>
+              <span id="recipe-cook" class="recipe-cook"></span>
             </div>
-
-            <div class="cook-time">
-              ${escapeHTML(recipe.cookTime || "—")}
+            <h1 id="recipe-title"></h1>
+            <hr class="hr">
+            <div class="recipe-columns">
+              <section>
+                <h6>Ingredients</h6>
+                <ul id="ingredient-list" class="ingredient-list"></ul>
+              </section>
+              <section>
+                <h6>Method</h6>
+                <ol id="step-list" class="step-list"></ol>
+              </section>
             </div>
-          </div>
+          </article>
 
-          ${image}
-
-          <div class="recipe-content">
-            <div>
-              <div class="section-title">Ingredients</div>
-
-              <ul class="ingredients">
-                ${(recipe.ingredients || []).map(item => `
-                  <li>${escapeHTML(item)}</li>
-                `).join("")}
-              </ul>
-            </div>
-
-            <div>
-              <div class="section-title">Method</div>
-
-              <ol class="steps">
-                ${(recipe.steps || []).map(step => `
-                  <li>${escapeHTML(step)}</li>
-                `).join("")}
-              </ol>
-            </div>
-          </div>
-
-          <div class="recipe-actions">
-            <button
-              class="edit-btn"
-              onclick="editRecipe('${recipe.id}')"
-            >
-              Edit
-            </button>
-
-            <button
-              class="delete-btn"
-              onclick="deleteRecipe('${recipe.id}')"
-            >
-              Delete
-            </button>
+          <div id="book-empty" class="book-empty" hidden>
+            <h2>The book is empty</h2>
+            <p>Write the first recipe and it becomes page one.</p>
+            <a class="btn btn-primary" href="recipe-form.html">+ New recipe</a>
           </div>
         </div>
-      `;
-    }
 
-    function renderAddPage() {
-      return `
-        <div
-          class="add-page"
-          onclick="location.href='recipe-form.html'"
-        >
-          <div class="plus">+</div>
-          <h2>Add a Recipe</h2>
-          <p>Click to create a new page</p>
+        <div id="bottombar" class="book-bottombar" hidden>
+          <a id="edit-link" class="btn btn-ghost" href="#">Edit</a>
+          <button id="delete-btn" class="btn btn-ghost" style="color: var(--color-neutral-700)" type="button">Delete</button>
+          <span style="flex:1"></span>
+          <span id="next-label" class="next-label"></span>
+          <button id="next-btn" class="btn btn-primary" type="button">Next &rarr;</button>
         </div>
-      `;
+      </main>
+    </div>
+  </div>
+</div>
+
+<script type="module">
+  import { load, remove } from './recipes.js';
+
+  let list = load();
+  let idx = 0;
+
+  const q = new URLSearchParams(location.search);
+  const idParam = q.get('id'), catParam = q.get('cat');
+  if (idParam) {
+    const i = list.findIndex(r => r.id === idParam);
+    if (i >= 0) idx = i;
+  } else if (catParam) {
+    const i = list.findIndex(r => r.category === catParam);
+    if (i >= 0) idx = i;
+  }
+
+  const tocEl = document.getElementById('toc');
+  const tocListEl = document.getElementById('toc-list');
+  const folioEl = document.getElementById('folio');
+  const articleEl = document.getElementById('recipe-article');
+  const emptyEl = document.getElementById('book-empty');
+  const bottombarEl = document.getElementById('bottombar');
+  const readingScrollEl = document.getElementById('reading-scroll');
+  const readingPaneEl = document.querySelector('.reading-pane');
+
+  function photoHtml(recipe) {
+    if (recipe.imageUrl) {
+      return '<img class="plate" src="' + recipe.imageUrl.replace(/"/g, '&quot;') + '" alt="">';
     }
+    return '<div class="plate plate-placeholder">Drop a photo of ' + recipe.title.toLowerCase() + '</div>';
+  }
 
-    function buildBook() {
-      const bookElement = document.getElementById("book");
+  function renderToc() {
+    tocListEl.innerHTML = '';
+    list.forEach((r, i) => {
+      const btn = document.createElement('button');
+      btn.className = 'toc-row' + (i === idx ? ' active' : '');
+      btn.innerHTML =
+        '<span class="toc-num">' + String(i + 1).padStart(2, '0') + '</span><span></span>';
+      btn.querySelector('span:last-child').textContent = r.title;
+      btn.addEventListener('click', () => jump(i));
+      tocListEl.appendChild(btn);
+    });
+  }
 
-      bookElement.innerHTML = "";
-
-      const pages = [];
-
-      pages.push(`
-        <div class="page">
-          ${renderTOC()}
-        </div>
-      `);
-
-      recipes.forEach((recipe, index) => {
-        pages.push(`
-          <div class="page">
-            ${renderRecipe(recipe, index)}
-          </div>
-        `);
-      });
-
-      pages.push(`
-        <div class="page">
-          ${renderAddPage()}
-        </div>
-      `);
-
-      bookElement.innerHTML = pages.join("");
-
-      const pageFlip = new St.PageFlip(bookElement, {
-        width: 450,
-        height: 600,
-        size: "stretch",
-        minWidth: 280,
-        maxWidth: 450,
-        minHeight: 400,
-        maxHeight: 650,
-        maxShadowOpacity: 0.25,
-        showCover: false,
-        mobileScrollSupport: true,
-        usePortrait: true
-      });
-
-      pageFlip.loadFromHTML(
-        bookElement.querySelectorAll(".page")
-      );
-
-      window.pageFlip = pageFlip;
+  function renderRecipe() {
+    const n = list.length;
+    if (n === 0) {
+      articleEl.hidden = true;
+      emptyEl.hidden = false;
+      bottombarEl.hidden = true;
+      folioEl.textContent = '';
+      return;
     }
+    idx = Math.min(idx, n - 1);
+    const current = list[idx];
+    const nextIdx = (idx + 1) % n;
 
-    function goToRecipe(index) {
-      if (!window.pageFlip) return;
+    emptyEl.hidden = true;
+    articleEl.hidden = false;
+    bottombarEl.hidden = false;
 
-      const pageNumber = index + 1;
-      window.pageFlip.flip(pageNumber);
-    }
+    document.getElementById('recipe-photo').innerHTML = photoHtml(current);
+    document.getElementById('recipe-category').textContent = current.category;
+    document.getElementById('recipe-cook').textContent = current.cookTime + ' min';
+    document.getElementById('recipe-title').textContent = current.title;
 
-    function editRecipe(id) {
-      location.href =
-        `recipe-form.html?id=${encodeURIComponent(id)}`;
-    }
+    const ingList = document.getElementById('ingredient-list');
+    ingList.innerHTML = '';
+    (current.ingredients || []).forEach(ing => {
+      const li = document.createElement('li');
+      li.textContent = ing;
+      ingList.appendChild(li);
+    });
 
-    function deleteRecipe(id) {
-      const recipe = recipes.find(item => item.id === id);
+    const stepList = document.getElementById('step-list');
+    stepList.innerHTML = '';
+    (current.steps || []).forEach((step, i) => {
+      const li = document.createElement('li');
+      li.innerHTML = '<span class="step-num">' + (i + 1) + '</span><span class="step-text"></span>';
+      li.querySelector('.step-text').textContent = step;
+      stepList.appendChild(li);
+    });
 
-      if (!recipe) return;
+    document.getElementById('edit-link').href = 'recipe-form.html?id=' + encodeURIComponent(current.id);
+    document.getElementById('next-label').textContent = n > 1 ? list[nextIdx].title : '';
+    folioEl.textContent = 'Page ' + (idx + 1) + ' of ' + n;
 
-      const confirmed = confirm(
-        `Delete "${recipe.title}"? This cannot be undone.`
-      );
+    readingScrollEl.scrollTop = 0;
+    renderToc();
+  }
 
-      if (!confirmed) return;
+  function playPageTurn() {
+    const overlay = document.createElement('div');
+    overlay.className = 'page-turn-overlay';
+    readingPaneEl.appendChild(overlay);
+    overlay.addEventListener('animationend', () => overlay.remove());
+    setTimeout(() => overlay.remove(), 700);
+  }
 
-      recipes = recipes.filter(item => item.id !== id);
-      saveRecipes();
+  function jump(i) {
+    tocEl.classList.remove('open');
+    if (i === idx) return;
+    idx = i;
+    playPageTurn();
+    renderRecipe();
+  }
 
-      buildBook();
-    }
+  document.getElementById('next-btn').addEventListener('click', () => {
+    if (list.length < 2) return;
+    jump((idx + 1) % list.length);
+  });
 
-    buildBook();
-  </script>
+  document.getElementById('delete-btn').addEventListener('click', () => {
+    const current = list[idx];
+    if (!current) return;
+    list = remove(current.id);
+    idx = Math.min(idx, Math.max(0, list.length - 1));
+    renderRecipe();
+  });
 
+  document.getElementById('toc-toggle').addEventListener('click', () => {
+    tocEl.classList.toggle('open');
+  });
+
+  renderRecipe();
+</script>
 </body>
 </html>
