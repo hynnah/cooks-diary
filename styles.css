@@ -1,6 +1,7 @@
 /* Cook's Diary — design tokens + component classes (from the Classical design system export),
    plus page layout rules for the dashboard, book and recipe form. */
 @import url('https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@400;600&family=Lora:wght@400;600&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Archivo:wght@400;500;600&display=swap');
 
 :root {
   --color-bg: #f3f2f2;
@@ -30,8 +31,9 @@
   --color-accent-800: #5a3b0a;
   --color-accent-900: #3a270d;
 
-  --font-heading: "Cormorant Garamond", system-ui, sans-serif;
-  --font-heading-weight: 600;
+  --font-heading: "Archivo", system-ui, sans-serif;
+  --font-heading-weight: 500;
+  --font-display: "Cormorant Garamond", serif;
   --font-body: "Lora", system-ui, sans-serif;
 
   --space-1: 4.6px;
@@ -69,6 +71,8 @@ h3 { font-size: 25px; }
 h4 { font-size: 20px; }
 h5 { font-size: 16px; }
 h6 { font-size: 13px; letter-spacing: 0.08em; text-transform: uppercase; }
+h1, h2, h3 { letter-spacing: -0.02em; }
+h6, label { letter-spacing: 0.06em; }
 p { margin: 0 0 var(--space-3); }
 a { color: var(--color-accent); text-underline-offset: 3px; }
 a:hover { color: var(--color-accent-700); }
@@ -168,10 +172,12 @@ textarea.input { font-family: var(--font-body); min-height: 90px; resize: vertic
   gap: var(--space-8); align-items: end;
 }
 .hero-kicker {
+  display: inline-block;
   font-size: 11px; letter-spacing: 0.14em; text-transform: uppercase;
-  color: var(--color-accent); margin-bottom: var(--space-3);
+  background: var(--color-accent); color: var(--color-neutral-100);
+  padding: 5px var(--space-3); margin-bottom: var(--space-4);
 }
-.hero h1 { font-size: 60px; font-weight: 400; line-height: 1.02; margin: 0 0 var(--space-3); }
+.hero h1 { font-family: var(--font-display); font-size: 64px; font-weight: 400; line-height: 1.02; margin: 0 0 var(--space-3); }
 .hero-tagline { font-size: 17px; line-height: 1.6; color: var(--color-neutral-700); max-width: 44ch; margin: 0; }
 
 .search-label {
@@ -202,7 +208,7 @@ textarea.input { font-family: var(--font-body); min-height: 90px; resize: vertic
 
 .stats-row {
   display: grid; grid-template-columns: repeat(3, 1fr);
-  border-top: 1px solid var(--color-divider); border-bottom: 1px solid var(--color-divider);
+  border-top: 3px solid var(--color-accent); border-bottom: 1px solid var(--color-divider);
 }
 .stat { padding: var(--space-6) var(--space-4); border-right: 1px solid var(--color-divider); }
 .stat:last-child { border-right: none; }
@@ -213,10 +219,11 @@ textarea.input { font-family: var(--font-body); min-height: 90px; resize: vertic
 .spotlight { display: block; text-decoration: none; color: inherit; border: 1px solid var(--color-divider); border-radius: var(--radius-md); padding: var(--space-4); transition: border-color 180ms ease; }
 .spotlight:hover { border-color: var(--color-accent); }
 .spotlight-photo { margin-bottom: var(--space-4); height: 220px; }
-.spotlight-kicker { font-size: 10px; letter-spacing: 0.1em; text-transform: uppercase; color: var(--color-accent); }
-.spotlight h3 { font-size: 26px; font-weight: 400; margin: var(--space-2) 0; }
+.spotlight-kicker { font-size: 10px; letter-spacing: 0.1em; text-transform: uppercase; color: var(--color-accent-700); }
+.spotlight h3 { font-family: var(--font-display); font-size: 30px; font-weight: 400; margin: var(--space-2) 0; }
 .spotlight-meta { font-size: 12px; color: var(--color-neutral-600); }
 
+.dash-body h6 { color: var(--color-accent-700); }
 .cat-chips { display: flex; flex-wrap: wrap; gap: var(--space-2); }
 .dash-blurb { font-size: 14px; line-height: 1.7; color: var(--color-neutral-700); text-align: justify; hyphens: auto; }
 
@@ -253,9 +260,9 @@ textarea.input { font-family: var(--font-body); min-height: 90px; resize: vertic
   transition: color 160ms ease, border-color 160ms ease;
 }
 .toc-row:hover { color: var(--color-text); border-left-color: var(--color-neutral-400); }
-.toc-row.active { border-left-color: var(--color-accent); color: var(--color-text); }
+.toc-row.active { background: var(--color-accent-100); border-left: 3px solid var(--color-accent); color: var(--color-text); }
 .toc-num { font-size: 11px; color: var(--color-neutral-500); font-feature-settings: 'tnum'; min-width: 18px; }
-.toc-row.active .toc-num { color: var(--color-accent); }
+.toc-row.active .toc-num { color: var(--color-accent-700); }
 
 .reading-pane { flex: 1; min-width: 0; position: relative; overflow: hidden; background: var(--color-neutral-100); }
 .reading-pane::before {
@@ -267,13 +274,15 @@ textarea.input { font-family: var(--font-body); min-height: 90px; resize: vertic
 .recipe-photo { margin-bottom: var(--space-6); height: 260px; }
 .recipe-meta-row { display: flex; align-items: center; gap: var(--space-3); margin-bottom: var(--space-3); }
 .recipe-cook { font-size: 12px; color: var(--color-neutral-600); font-feature-settings: 'tnum'; }
-.recipe-article h1 { font-size: 46px; font-weight: 400; margin: 0 0 var(--space-4); }
+.recipe-article h1 { font-family: var(--font-display); font-size: 52px; font-weight: 400; margin: 0 0 var(--space-4); }
+.recipe-article h1 + hr { height: 3px; width: 72px; background: var(--color-accent); }
 .recipe-columns { display: grid; grid-template-columns: repeat(auto-fit, minmax(240px, 1fr)); gap: var(--space-8); }
+.recipe-columns h6 { color: var(--color-accent-700); }
 .ingredient-list { list-style: none; margin: 0; padding: 0; display: flex; flex-direction: column; }
 .ingredient-list li { padding: var(--space-2) 0; border-bottom: 1px solid var(--color-divider); font-size: 15px; line-height: 1.5; }
 .step-list { list-style: none; margin: 0; padding: 0; display: flex; flex-direction: column; gap: var(--space-4); }
 .step-list li { display: flex; gap: var(--space-3); align-items: flex-start; }
-.step-num { font-family: var(--font-heading); font-size: 13px; color: var(--color-accent); font-feature-settings: 'tnum'; padding-top: 3px; min-width: 16px; }
+.step-num { font-family: var(--font-heading); font-size: 13px; color: var(--color-accent-700); font-feature-settings: 'tnum'; padding-top: 3px; min-width: 16px; }
 .step-text { font-size: 15px; line-height: 1.6; text-align: justify; hyphens: auto; }
 
 .book-empty { max-width: 420px; margin: 18vh auto; text-align: center; }
@@ -306,8 +315,14 @@ textarea.input { font-family: var(--font-body); min-height: 90px; resize: vertic
 
 /* ══════════════ Recipe Form ══════════════ */
 .page-form main { max-width: 720px; margin: 0 auto; padding: var(--space-8) var(--space-6); }
-.form-kicker { font-size: 11px; letter-spacing: 0.14em; text-transform: uppercase; color: var(--color-accent); margin-bottom: var(--space-2); }
-.page-form h1 { font-size: 44px; font-weight: 400; margin: 0 0 var(--space-6); }
+.form-kicker {
+  display: inline-block;
+  font-size: 11px; letter-spacing: 0.14em; text-transform: uppercase;
+  background: var(--color-accent); color: var(--color-text);
+  padding: 5px var(--space-3); margin-bottom: var(--space-3);
+}
+.page-form h1 { font-family: var(--font-display); font-size: 48px; font-weight: 400; margin: 0 0 var(--space-6); }
+.page-form h1 + hr { height: 3px; width: 72px; background: var(--color-accent); }
 #recipe-form { display: flex; flex-direction: column; gap: var(--space-6); }
 .form-row-2 { display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: var(--space-4); }
 .form-actions { display: flex; align-items: center; gap: var(--space-3); }
